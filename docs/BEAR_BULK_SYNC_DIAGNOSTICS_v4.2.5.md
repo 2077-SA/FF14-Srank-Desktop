@@ -28,6 +28,8 @@ https://github.com/Laficia/MagicBucket/blob/main/src/SrankFlag/SrankFlag/BearBul
 - duplicateRecords：重复条目数。
 - isolatedRecords：因来源冲突被隔离数。
 
+**注意：** 全大区批次在字段解析阶段被拒绝时，桥接器也会先把各世界 raw / parsed / rejected 数量写入明细，然后将大区标记为「校验异常」。这样不会再只显示笼统的 0 条。
+
 ## 测试
 
 桌面 26/26、桥接 36/36。ZIP 解压后的最终源码复跑语法和所有测试通过。测试使用模拟 Bear 响应，不代表已经抓到用户当次在线原始响应。
