@@ -50,7 +50,7 @@ jobs:
       - name: Build Windows installer and portable EXE
         shell: pwsh
         working-directory: ${{ runner.temp }}/ff14-srank-v423/FF14_Srank_Desktop_v4.2.3
-        run: npm run dist:win -- --publish never
+        run: npx electron-builder --win nsis portable --publish never
 
       - name: Publish GitHub Release and updater metadata
         uses: softprops/action-gh-release@v2
