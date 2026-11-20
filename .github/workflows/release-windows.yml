@@ -18,8 +18,8 @@ jobs:
       - name: Extract desktop project archive
         shell: pwsh
         run: |
-          $archive = Join-Path $env:GITHUB_WORKSPACE 'FF14_Srank_Desktop_v4.2.2_工程源码.zip'
-          if (-not (Test-Path -LiteralPath $archive)) { throw '未找到 FF14_Srank_Desktop_v4.2.2_工程源码.zip。请先将源码 ZIP 上传到仓库根目录。' }
+          $archive = Join-Path $env:GITHUB_WORKSPACE 'FF14_Srank_Desktop_v4.2.2_source.zip'
+          if (-not (Test-Path -LiteralPath $archive)) { throw '未找到 FF14_Srank_Desktop_v4.2.2_source.zip。请先将源码 ZIP 上传到仓库根目录。' }
           $dest = Join-Path $env:RUNNER_TEMP 'ff14-srank-v422'
           New-Item -ItemType Directory -Force -Path $dest | Out-Null
           Expand-Archive -LiteralPath $archive -DestinationPath $dest -Force
@@ -50,7 +50,7 @@ jobs:
       - name: Build Windows installer and portable EXE
         shell: pwsh
         working-directory: ${{ runner.temp }}/ff14-srank-v422/FF14_Srank_Desktop_v4.2.2
-        run: npm run dist:win -- --publish never
+        run: npx electron-builder --win nsis portable --publish never
 
       - name: Publish GitHub Release and updater metadata
         uses: softprops/action-gh-release@v2
