@@ -18,13 +18,13 @@ jobs:
       - name: Extract desktop project archive
         shell: pwsh
         run: |
-          $archive = Join-Path $env:GITHUB_WORKSPACE 'FF14_Srank_Desktop_v4.2.0_source.zip'
-          if (-not (Test-Path -LiteralPath $archive)) { throw '未找到 FF14_Srank_Desktop_v4.2.0_source.zip。请先将源码 ZIP 上传到仓库根目录。' }
-          $dest = Join-Path $env:RUNNER_TEMP 'ff14-srank-v420'
+          $archive = Join-Path $env:GITHUB_WORKSPACE 'FF14_Srank_Desktop_v4.2.1_工程源码.zip'
+          if (-not (Test-Path -LiteralPath $archive)) { throw '未找到 FF14_Srank_Desktop_v4.2.1_工程源码.zip。请先将源码 ZIP 上传到仓库根目录。' }
+          $dest = Join-Path $env:RUNNER_TEMP 'ff14-srank-v421'
           New-Item -ItemType Directory -Force -Path $dest | Out-Null
           Expand-Archive -LiteralPath $archive -DestinationPath $dest -Force
-          $project = Join-Path $dest 'FF14_Srank_Desktop_v4.2.0'
-          if (-not (Test-Path (Join-Path $project 'package.json'))) { throw '工程 ZIP 目录结构不正确：缺少 FF14_Srank_Desktop_v4.2.0/package.json' }
+          $project = Join-Path $dest 'FF14_Srank_Desktop_v4.2.1'
+          if (-not (Test-Path (Join-Path $project 'package.json'))) { throw '工程 ZIP 目录结构不正确：缺少 package.json' }
           "FF14_PROJECT=$project" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
 
       - name: Set up Node.js
@@ -34,40 +34,40 @@ jobs:
 
       - name: Install dependencies
         shell: pwsh
-        working-directory: ${{ runner.temp }}/ff14-srank-v420/FF14_Srank_Desktop_v4.2.0
+        working-directory: ${{ runner.temp }}/ff14-srank-v421/FF14_Srank_Desktop_v4.2.1
         run: npm install --no-audit --no-fund
 
       - name: Check source syntax
         shell: pwsh
-        working-directory: ${{ runner.temp }}/ff14-srank-v420/FF14_Srank_Desktop_v4.2.0
+        working-directory: ${{ runner.temp }}/ff14-srank-v421/FF14_Srank_Desktop_v4.2.1
         run: npm run check
 
       - name: Run automated tests
         shell: pwsh
-        working-directory: ${{ runner.temp }}/ff14-srank-v420/FF14_Srank_Desktop_v4.2.0
+        working-directory: ${{ runner.temp }}/ff14-srank-v421/FF14_Srank_Desktop_v4.2.1
         run: npm test
 
       - name: Build Windows installer and portable EXE
         shell: pwsh
-        working-directory: ${{ runner.temp }}/ff14-srank-v420/FF14_Srank_Desktop_v4.2.0
-        run: npx electron-builder --win nsis portable --publish never
+        working-directory: ${{ runner.temp }}/ff14-srank-v421/FF14_Srank_Desktop_v4.2.1
+        run: npm run dist:win -- --publish never
 
       - name: Publish GitHub Release and updater metadata
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v4.2.0
+          tag_name: v4.2.1
           target_commitish: ${{ github.sha }}
-          name: FF14 Srank Desktop v4.2.0
+          name: FF14 Srank Desktop v4.2.1
           generate_release_notes: true
           files: |
-            ${{ runner.temp }}/ff14-srank-v420/FF14_Srank_Desktop_v4.2.0/release/*.exe
-            ${{ runner.temp }}/ff14-srank-v420/FF14_Srank_Desktop_v4.2.0/release/*.yml
-            ${{ runner.temp }}/ff14-srank-v420/FF14_Srank_Desktop_v4.2.0/release/*.blockmap
+            ${{ runner.temp }}/ff14-srank-v421/FF14_Srank_Desktop_v4.2.1/release/*.exe
+            ${{ runner.temp }}/ff14-srank-v421/FF14_Srank_Desktop_v4.2.1/release/*.yml
+            ${{ runner.temp }}/ff14-srank-v421/FF14_Srank_Desktop_v4.2.1/release/*.blockmap
 
       - name: Keep build artifacts for manual download
         uses: actions/upload-artifact@v4
         with:
-          name: FF14-Srank-Desktop-v4.2.0-Windows-EXE
-          path: ${{ runner.temp }}/ff14-srank-v420/FF14_Srank_Desktop_v4.2.0/release/*
+          name: FF14-Srank-Desktop-v4.2.1-Windows-EXE
+          path: ${{ runner.temp }}/ff14-srank-v421/FF14_Srank_Desktop_v4.2.1/release/*
           if-no-files-found: error
           retention-days: 14
