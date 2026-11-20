@@ -1,16 +1,24 @@
 # FF14 Srank Desktop
 
-## v4.1.1 自动更新版（Windows）
+## v4.1.2 紧急修复版（Windows）
 
-桌面版 v4.1.1 工程采用独立 Electron 外壳，自动更新功能通过 GitHub Releases 提供。
+v4.1.2 修复 v4.1.0 / v4.1.1 共有的桌面监控室载入问题和首次选区问题。
 
-- Windows 安装版：启动后延迟检查正式版更新；也可从「帮助 → 检查更新」手动检查。
-- 安装版：下载前询问，下载完成后再次询问是否重启安装；使用 GitHub Release 的 latest.yml / SHA-512 元数据校验更新包。
-- Portable 版：检查新版本并打开 Releases 下载页，由用户手动替换正在运行的单文件 EXE。
-- 本地数据：继续保存在 Electron userData 独立目录，程序更新不会主动删除本地 S 怪数据、CD、服务器设置和缓存。
-- 发布流程：GitHub Actions 执行语法检查、自动化测试、Windows 安装版与 Portable 构建，并发布 EXE、latest.yml 和 blockmap。
+- **监控室载入：** 修复内嵌监控页面 JSON 被重复公告脚本破坏的问题；页面数据异常与真正的身份权限不足现在分别提示。
+- **身份权限：** 未验证身份时会打开原有身份验证窗口，保留邀请码和角色权限校验，不绕过权限。
+- **提前选区：** 首次启动预选「陆行鸟」，可提前选择四大数据中心；保存前不启动扫描，避免尚未确认时误触发。
+- **远端词库：** 远端资源尚未就绪时，仍可先保存合法数据中心；资源加载后再按远端数据校验。
+- **本地数据：** 不主动清理 Electron userData；原有设置、CD 和本地记录不因本次修复而迁移或重置。
+- **自动更新：** 保留 GitHub Releases 安装版自动检查与下载确认流程。
 
-**构建准备：** 请将 `FF14_Srank_Desktop_v4.1.1_工程源码.zip` 上传到仓库根目录，然后运行 Actions 中的 **Build and publish FF14 Srank Desktop release** 工作流。工作流目前按 v4.1.1 构建；不要覆盖原有 v4.0.0 源码包或仓库里的其他网页文件。
+### 发布 v4.1.2
+
+1. 下载 `FF14_Srank_Desktop_v4.1.2_工程源码.zip`。
+2. 将这个 ZIP 上传到本仓库根目录（不要删除或覆盖原有 HTML、README 或其他网页文件）。
+3. 打开 **Actions → Build and publish FF14 Srank Desktop release → Run workflow**。
+4. 工作流通过检查后会发布安装版 EXE、Portable EXE，以及更新所需的元数据文件。
+
+工作流只会在手动触发时运行；仓库根目录必须先存在对应 v4.1.2 源码 ZIP。EXE 尚未由本次代码提交自动生成。
 
 ---
 
