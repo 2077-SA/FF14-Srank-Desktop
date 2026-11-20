@@ -15,6 +15,17 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v4
 
+      - name: Set release tag
+        id: release
+        shell: pwsh
+        run: |
+          if ('${{ github.event_name }}' -eq 'workflow_dispatch') {
+            $tag = 'v${{ inputs.version }}'
+          } else {
+            $tag = '${{ github.ref_name }}'
+          }
+          "tag=$tag" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+
       - name: Extract desktop project archive
         shell: pwsh
         run: |
@@ -50,7 +61,7 @@ jobs:
       - name: Build Windows installer and portable EXE
         shell: pwsh
         working-directory: ${{ runner.temp }}/ff14-srank-v411/FF14_Srank_Desktop_v4.1.1
-        run: npm run dist:win -- --publish never
+        run: npx electron-builder --win nsis portable --publish never
 
       - name: Publish GitHub Release and updater metadata
         uses: softprops/action-gh-release@v2
