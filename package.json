@@ -1,0 +1,17 @@
+{
+  "name": "beartracker-bridge",
+  "version": "1.3.3",
+  "private": true,
+  "description": "Bear Tracker 匿名 S 怪 CD 到 FF14 Srank 工具箱同步桥接",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "sync": "node src/index.js sync",
+    "check": "node --check src/index.js && node --check src/tracker-rest.js && node --check src/normalize.js && node --check src/store.js && node --check src/server.js && node --check src/resources.js && node --check toolbox-adapter.js && node --check examples/watcher.js",
+    "test": "node --test tests/*.test.js"
+  },
+  "dependencies": {},
+  "engines": {
+    "node": ">=20"
+  }
+}
