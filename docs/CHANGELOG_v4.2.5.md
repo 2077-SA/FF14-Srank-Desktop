@@ -11,10 +11,11 @@ https://github.com/Laficia/MagicBucket/blob/main/src/SrankFlag/SrankFlag/BearBul
 
 1. 批量响应缺省 `isMaint` 时兼容为 `false`；显式 null、未知字符串和不支持的值依然拒绝。
 2. 原始 `timers` 有记录但全部解析失败，整区标记「校验异常」，不更新成功时间、不清空旧缓存。
-3. 只有原始数组确实为空，才标记「接口无记录」。
-4. 服务器明细分别显示 raw / parsed / distinct / accepted / rejected / duplicate / isolated。
-5. 144/144 进度文案改为「已处理查询目标」，明确是任务完成数而不是发现记录数。
-6. 维持 Bear CD 的正常 `RespawnTimer` 与维护 `MaintTimer` 口径；不能通过解析的时间窗仍不能进入监控室或计算器。
+3. **全批次解析失败时仍保留每世界诊断**：原始有数据的世界显示 raw / parsed / rejected 计数和错误原因；本轮确实没有记录的世界单独标记 empty。
+4. 只有原始数组确实为空，才标记「接口无记录」。
+5. 服务器明细分别显示 raw / parsed / distinct / accepted / rejected / duplicate / isolated。
+6. 144/144 进度文案改为「已处理查询目标」，明确是任务完成数而不是发现记录数。
+7. 维持 Bear CD 的正常 `RespawnTimer` 与维护 `MaintTimer` 口径；不能通过解析的时间窗仍不能进入监控室或计算器。
 
 ## 测试
 
